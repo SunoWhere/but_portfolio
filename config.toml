@@ -1,0 +1,25 @@
+# The URL the site will be built for
+base_url = "https://but.mougammadaly.fr"
+
+title = "Jessy MOUGAMMADALY - BUT 3"
+
+# Whether to automatically compile all Sass files in the sass directory
+compile_sass = true
+
+# Whether to build a search index to be used later on by a JavaScript library
+build_search_index = false
+
+theme = "anemone"
+
+[markdown]
+# Whether to do syntax highlighting
+# Theme can be customised by setting the `highlight_theme` variable to a theme supported by Zola
+highlight_code = false
+
+[extra]
+header_nav = [
+    { url = "/", name_en = "/home/", name_fr = "/home/" },
+    { url = "/competence1", name_en = "/competence1/", name_fr = "/competence1/" },
+    { url = "/competence2", name_en = "/competence2/", name_fr = "/competence2/" },
+    { url = "/competence6", name_en = "/competence6/", name_fr = "/competence6/" }
+]
