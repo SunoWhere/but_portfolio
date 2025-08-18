@@ -89,15 +89,15 @@ malheureusement pas servir pour d'autres tâches, sinon cela pourrait fausser le
 matériel.
 
 La trace 2 montre aussi la présence d'opération en parallèle (la superposition d'éléments multiples en dessous des workers et le fait
-que plusieurs flêches sortent du Worker Pool Manager, le gestionneur des instances de workers), j'ai mentionné plus haut le fait que les
-workers ont été pensés pour pouvoir être distribués, l'intérêt est dans un premier temps la diminution de la charge sur les serveurs et 
+que plusieurs flèches sortent du Worker Pool Manager, le gestionnaire des instances de workers), j'ai mentionné plus haut le fait que les
+workers ont été pensés pour pouvoir être distribués, l'intérêt est dans un premier temps la diminution de la charge sur les serveurs et
 sur l'application principale, mais la capacité de pouvoir changer l'échelle et le nombre de pages analysées en parallèle juste en ajoutant
 de nouveaux workers.
 
-Après avoir effectué de nombreuses optimisations en termes de mémoire et d'utilisation du CPU pour les workers, ils sont en capacité de 
-tourner sur des machines peu performantes avec 4Go de RAM et des processeurs avec une puissance de calcul tout à fait relative. Une des 
+Après avoir effectué de nombreuses optimisations en termes de mémoire et d'utilisation du CPU pour les workers, ils sont en capacité de
+tourner sur des machines peu performantes avec 4Go de RAM et des processeurs avec une puissance de calcul tout à fait relative. Une des
 méthodes d'optimisation principales pour alléger l'impact sur les ressources a été d'employer des spécificités de Rust permettant le fait
-de rendre aisément le retour de fonction statique après un premier appel, ce qui fait que les fonctions dépendant d'autres fonctions 
+de rendre aisément le retour de fonction statique après un premier appel, ce qui fait que les fonctions dépendant d'autres fonctions
 utilisent des résultats mis en cache pour éviter de relancer des processus qui peuvent être longs et lourds.
 
 ## De l'asynchrone pour gagner en temps
@@ -108,3 +108,92 @@ minimiser le temps de calcul d'une page, puis minimiser le temps pour calculer c
 ![Description de l'algorithme d'un worker pour analyser une page](worker_description.png "Description de l'algorithme d'un worker pour analyser une page")
 |**Trace 3 : Description de l'algorithme d'un worker pour analyser une page**|
 |---|
+
+Cette trace décrit le fonctionnement du programme Rust servant de worker pour analyser les différents critères que nous cherchons à
+récupérer et à étudier.
+
+Le déroulement du fonctionnement est assez simple, tout d'abord, le worker reçoit en entrée l'url d'une page et la liste des
+variables à analyser, ensuite une connexion avec le web driver permettant la navigation automatique est établie, cette connexion est
+fermée une fois que l'analyse de la page est terminée. Une fois la connexion établie, on navigue sur la page à analyser, puis on attend
+un certain laps de temps pour laisser le temps à la page de charger, le choix de 10s est lié à la variation de la connexion internet
+et le temps variable que peut mettre un site à charger, ce choix a été aussi fait en conséquence de données liées au référencement web,
+pour expliquer ce dernier point, il faut comprendre que des moteurs comme Google détermine si un site a été pertinent en fonction du
+temps que l'utilisateur a passé dessus, ce temps dans le cas de Google est de 8s. En prenant, les temps théoriques liés à la navigation
+déterminés par les moteurs de recherche comme Google, on peut penser que les développeurs mettent tout en oeuvre pour avoir un site
+chargé dans sa forme quasiment la plus complète avant que l'utilisateur ne décide de quitter la page et donc de charger la page en moins
+de 8s, les 10s ont été décidés en prenant en compte une marge supplémentaire.
+
+Maintenant que nous avons une page qui est chargée, il est temps de commencer des opérations depuis celle-ci, on commence par prendre une
+capture d'écran de la page, cette capture servira pour le calcul de certains critères. Après cela, la partie importante débute, celle
+concernant le calcul des critères. Pour calculer l'ensemble des critères, on commence par itérer sur la liste passée en entrée, dans une
+certaine fonction Rust, il y a l'association entre le nom du critère et le processus (une fonction) associé, l'ensemble des processus est
+appelé de manière asynchrone, permettant ainsi l'exécution non bloquante de ceux-ci. Cette partie est réalisée par la fonction suivante :
+
+```Rust
+pub async fn process(
+        &self,
+        variables: Vec<String>,
+        keyword: String,
+    ) -> HashMap<String, String> {
+        let mut values = HashMap::new();
+        let mut futures = FuturesUnordered::new();
+        for variable in variables {
+            futures.push(tokio::time::timeout(
+                Duration::from_secs(180),
+                self.compute_variable(variable, keyword.as_str()),
+            ));
+        }
+        while let Some(result) = futures.next().await {
+            let (variable_name, value) = result.unwrap_or((
+                "none".into(),
+                Err(anyhow!("Compute variable future timeout !")),
+            ));
+            match value {
+                Ok(res) => {
+                    if !res.is_object() {
+                        values.insert(variable_name, res.to_string())
+                    } else {
+                        res.as_object().unwrap().iter().for_each(|(key, value)| {
+                            values.insert(key.clone(), value.to_string());
+                        });
+                        None
+                    }
+                }
+                Err(_) => None,
+            };
+        }
+        values
+    }
+```
+
+Il pourrait être indigeste de donner l'ensemble du code permettant le calcul de chaque critère, et ce n'est pas ici l'objectif. Dans
+cette fonction, plusieurs éléments sont importants, tout d'abord, nous avons la création de Future en Rust, ce sont des structures
+de données similaires au Promise en JavaScript. Chaque Future correspond à l'exécution du processus de calcul d'un critère, pour ne pas
+avoir de critère bloquant le retour final de l'analyse, il est nécessaire de mettre en place une durée maximale d'exécution de la tâche
+avant de forcer son arrêt. L'ensemble des Future est stocké dans une liste de Future qui permet de récupérer les résultats des Future
+de manière désordonnée, on attend uniquement la complétion d'un Future avant de récupérer son résultat s'il y en a, dans le cas, d'un
+échec, le résultat prend la valeur "none" et renvoie une erreur. Pour finir, les résultats récupérés sont sauvegardés dans une collection
+de type Map pour permettre l'association entre le nom du critère et sa valeur de retour, les critères ayant soulevé une erreur ne sont pas
+sauvegardés, le backend côté API gérera les valeurs manquantes en spécifiant qu'une erreur est survenue pour tel critère.
+
+Il est possible que deux critères ou plus soient dépendants du résultat d'une fonction commune ou doivent accéder à un même élément de la mémoire,
+cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui Mutex et accès
+concurrent.
+
+La dernière étape est le retour de la Map contenant les résultats, pour ce faire, la Map est envoyé dans la file de message de résultats
+du "Message Broker", cette file est lue par un worker dédié côté API permettant la récupération des entrées et leur sauvegarde en base
+de données.
+
+Dans le cas où un worker échoue à se lancer, Celery gérera la relance des tâches échouées sur un autre worker disponible.
+
+## Conclusion
+
+L'un des éléments importants de cette alternance a été de pouvoir proposer un programme efficace que ce soit en termes de temps
+d'exécution, mais aussi en termes de quantité de pages et critères à analyser. J'ai dû passer une grande partie de mon temps à
+réfléchir à comment permettre le calcul non bloquant, optimisé et en parallèle des critères, mais aussi à réfléchir à comment limiter
+l'impact sur les ressources de la machine hôte. Rust a permis un gain de performance assez important, mais aussi a permis de mitiger
+l'impact mémoire avec notamment le fonctionnement du langage en lui-même, et avec la présence d'éléments permettant la simplification
+de la gestion d'éléments statiques (OnceCell, etc.). Le fait d'avoir opté pour une architecture distribuée a permis plusieurs choses,
+premièrement, de pouvoir augmenter la capacité de calcul de l'outil, deuxième, d'éviter l'encombrement des workers, et troisièmement,
+de pouvoir permettre l'échec et la relance des analyses sans fortement impacter l'accès à l'application. Il reste malgré tout du travail
+à effectuer pour pouvoir toujours améliorer l'application et ses performances.
