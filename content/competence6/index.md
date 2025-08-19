@@ -125,7 +125,7 @@ aussi pour leur partager mes découvertes.
 
 Dans les rendus que j'ai pu réaliser, le plus important a été un tableau de synthèse de l'ensemble des critères d'Holistic Analytica.
 
-![Extrait du document de référence des critères d'Holistic Analytica](zotero_folder.png "Extrait du document de référence des critères d'Holistic Analytica")
+![Extrait du document de référence des critères d'Holistic Analytica](extrait_criteria_refs.png "Extrait du document de référence des critères d'Holistic Analytica")
 |**Illustration 3 : Extrait du document de référence des critères d'Holistic Analytica**|
 |---|
 
