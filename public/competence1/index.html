@@ -74,7 +74,7 @@
     <div class="post-content">
         <p>Cette section est dédiée à la présentation du travail réalisé correspondant à la compétence 1 lors de l'alternance à l'ESTA.</p>
 <h2 id="presentation-de-la-competence-et-des-apprentissages-critiques">Présentation de la compétence et des apprentissages critiques</h2>
-<p>Cette compétence se centre sur la réalisation et le développement d'application.</p>
+<p>Cette compétence se centre sur la réalisation et le développement d'applications.</p>
 <table><thead><tr><th>Composantes</th><th>AC 1</th><th>AC 2</th><th>AC 3</th><th>AC 4</th></tr></thead><tbody>
 <tr><td>Développer des applications informatiques simples</td><td>Implémenter des conceptions simples</td><td>Élaborer des conceptions simples</td><td>Faire des essais et évaluer leurs résultats en regard des spécifications</td><td>Développer des interfaces utilisateurs</td></tr>
 <tr><td>Partir des exigences et aller jusqu'à une application complète</td><td>Élaborer et implémenter les spécifications fonctionnelles et non fonctionnelles à partir des exigences</td><td>Appliquer des principes d'accessibilité et d'ergonomie</td><td>Adopter de bonnes pratiques de conception et de programmation</td><td>Vérifier et valider la qualité de l'application par les tests</td></tr>
@@ -83,7 +83,7 @@
 <h2 id="presentation-de-l-application">Présentation de l'application</h2>
 <p>Tout d'abord, il est important de connaître l'application qui a été développée et le but de sa création. L'application
 réalisée est un outil d'analyse multi-critères de pages web, son objectif est la récupération de données relatives à
-la culturalization, au référencement et à l'éco conception web. Pour ce faire l'application utilise un scraper permettant de
+la culturalization, au référencement et à l'éco conception web. Pour ce faire, l'application utilise un scraper permettant de
 naviguer et de récupérer les données voulues ou de les calculer à partir d'éléments présents sur les pages analysées.
 L'application est une évolution mais aussi une reprise à zéro d'anciens projets qui ont été développés dans le cadre des recherches de
 M. SAGOT, enseignant-chercheur et directeur de la recherche à l'ESTA, qui a été mon tuteur durant cette alternance.</p>
@@ -92,12 +92,12 @@ M. SAGOT, enseignant-chercheur et directeur de la recherche à l'ESTA, qui a ét
 <p>Dans les fonctionnalités importantes, nous avions :</p>
 <ul>
 <li>Un système d'authentification simple</li>
-<li>Une capacité d'analyse de pages web assez importantes</li>
+<li>Une capacité d'analyse de pages web assez importante</li>
 <li>Une liste de critères fiables et s'inscrivant dans une démarche scientifique</li>
 <li>Une application avec client web responsive</li>
 <li>Un panel d'administration simple et intuitif</li>
 <li>Une application maintenable sur le long terme</li>
-<li>Un historisation des valeurs d'une page pour pouvoir les comparer à travers le temps</li>
+<li>Une historisation des valeurs d'une page pour pouvoir les comparer à travers le temps</li>
 </ul>
 <h2 id="architecture-de-l-application">Architecture de l'application</h2>
 <p>Dans le but de pouvoir avoir une application maintenable et fiable sur le long terme, il a été important de réfléchir à la manière de
@@ -114,22 +114,22 @@ décomposer celle-ci. Ce qui m'amène à vous présenter la première illustrati
 </ul>
 <p>Dans cette section concernant la compétence 1, nous ne nous focaliserons pas sur la distribution des workers et les optimisations et
 contraintes liées à ceux-ci, nous en parlerons plus amplement dans la section concernant la <a href="/competence2/">compétence 2</a>.</p>
-<p>Pour en revenir à la description de la illustration, nous avons l'interface utilisateur qui permet les interactions avec l'API, notamment
-pour la création des rapport d'analyses qui sont le regroupement d'une liste de pages et de critères à analyser, mais aussi la
-visualisation des données obtenues et ceux même pendant que l'analyse est progression. Nous pouvons aussi remarquer la présence d'une
+<p>Pour en revenir à la description de l'illustration, nous avons l'interface utilisateur qui permet les interactions avec l'API, notamment
+pour la création des rapports d'analyses qui sont le regroupement d'une liste de pages et de critères à analyser, mais aussi la
+visualisation des données obtenues et ce même pendant que l'analyse est en progression. Nous pouvons aussi remarquer la présence d'une
 relation bidirectionnelle entre l'API et l'interface, cette relation est produite par la présence d'un websocket permettant la mise en
 place d'un système de notifications pour obtenir les mises à jour concernant la progression des rapports sur une page dédiée.</p>
 <p>L'API a deux bases de données qui lui sont liées, la première est une base de données relationnelle classique permettant le stockage des
 données permettant le bon fonctionnement de l'outil. La deuxième base de données sert de "Message Broker", c'est une file de messages pour
 permettre l'ordonnancement des tâches workers, lorsqu'un rapport est créé, un ensemble de tâches est ajouté à la file de messages.
-Cette file de messages est accessible par n'importe quel worker qui par l'intermédiaire d'un outil d'ordonnancement va pouvoir prendre une
-tâche en attente (une tâche est une page à analyser suivant une liste de critères définie) et commencer l'analyse avant retourner ses
+Cette file de messages est accessible par n'importe quel worker qui, par l'intermédiaire d'un outil d'ordonnancement, va pouvoir prendre une
+tâche en attente (une tâche est une page à analyser suivant une liste de critères définie) et commencer l'analyse avant de retourner ses
 résultats dans la file de messages du "Message Broker". Les résultats retournés sont ensuite stockés dans la base de données principale
 avant d'être décortiqués pour obtenir les différentes entrées correspondant aux différentes valeurs de chaque critère.</p>
 <h3 id="implementation-et-travail-effectue">Implémentation et travail effectué</h3>
 <p>Maintenant que l'architecture a été décrite de manière succincte, il est temps de passer à la partie implémentation de celle-ci.</p>
 <p>Pour commencer, nous allons aborder la partie interface utilisateur, qui se décompose en deux interfaces distinctes. La première est
-l'interface de l'outil, celle permettant la création de rapport et leur suivi. La deuxième est l'interface d'administration permettant
+l'interface de l'outil, celle permettant la création de rapports et leur suivi. La deuxième est l'interface d'administration permettant
 la gestion des données de l'outil.</p>
 <p>L'interface de l'outil a été développée en utilisant Nuxt et NuxtUI (bibliothèque de composants graphiques pour Nuxt), l'intérêt de ce
 choix est multiple. Tout d'abord, Nuxt ressemble à VueJS, mais à plusieurs abstractions et éléments présents pour faciliter le
@@ -138,35 +138,35 @@ permet d'alléger une partie du rendu du côté client en rendant ce qui peut l'
 NuxtUI a été de pouvoir avoir un panel de composants responsives pour ne pas perdre trop de temps à développer l'interface qui n'est pas
 la plus grande priorité de cette alternance. Il est important de souligner que VueJS avait été utilisé pour débuter le développement de
 cette interface, mais a été abandonné au profit de Nuxt, car certaines bibliothèques employées ne fonctionnaient pas ou mal avec VueJS.</p>
-<p>L'interface administrateur a d'abord été développée en utilisant VueJS aussi, cependant des suites de changement de technologies du
-côté de l'API, j'ai pu me permettre d'exploiter l'interface d'administration de Django directement, elle permet énormément d'opération
-sur les données de l'outil, mais aussi elle est dotée d'une flexibilité et d'un niveau de personnalisation assez conséquents.</p>
+<p>L'interface administrateur a d'abord été développée en utilisant VueJS aussi, cependant, à la suite de changements de technologies du
+côté de l'API, j'ai pu me permettre d'exploiter l'interface d'administration de Django directement, elle permet énormément d'opérations
+sur les données de l'outil, mais elle est aussi dotée d'une flexibilité et d'un niveau de personnalisation assez conséquents.</p>
 <p>Ensuite, maintenant que nous avons parlé de l'interface et introduit Django, il est temps de discuter de l'implémentation du Backend et de
 l'API. Dans cette partie, nous allons omettre ce qui concerne les workers qui seront développés dans la <a href="/competence2/">compétence 2</a>.</p>
 <p>L'API a connu un développement en deux temps causé par un changement technologique durant son développement, j'avais tout d'abord
 utilisé FastAPI et SQLAlchemy pour développer celle-ci, mais j'ai fait face à de nombreuses contraintes liées à l'utilisation de
 ces technologies. Tout d'abord, FastAPI est un cadriciel assez récent, qui permet le développement d'API simple, le cadriciel est en soi
-assez complet et permet une grande flexibilité de développement, néanmoins il est par moment trop épuré, voire lacunaire, ce qui m'avait
-amené à devoir passer du temps à développer des éléments qui seraient basiques et fondamentaux dans d'autres cadriciel. Une autre raison
+assez complet et permet une grande flexibilité de développement, néanmoins il est par moments trop épuré, voire lacunaire, ce qui m'avait
+amené à devoir passer du temps à développer des éléments qui seraient basiques et fondamentaux dans d'autres cadriciels. Une autre raison
 qui m'a poussé à choisir de changer les technologies du projet a été SQLAlchemy, SQLAlchemy est une bibliothèque permettant de créer une
-abstraction dans les interactions la base de données, ce n'est pas pour autant un ORM, mais il s'en approche. Ce que gagne SQLAlchemy en
+abstraction dans les interactions avec la base de données, ce n'est pas pour autant un ORM, mais il s'en approche. Ce que gagne SQLAlchemy en
 flexibilité, il le perd en facilité de conception et d'usage, SQLAlchemy se révèle être plus complexe que nécessaire pour certains usages.
-Après mûre réflexion et recherche, j'ai décidé d'utiliser Django qui a permis, de faciliter une grande partie du développement, grâce à sa
+Après mûre réflexion et recherche, j'ai décidé d'utiliser Django qui a permis de faciliter une grande partie du développement, grâce à sa
 pile technologique très complète. Django est un cadriciel mature et utilisé pour de nombreux projets, il a une structure permettant la
-réutilisation de composantes, un ORM améliorant grandement la qualité de développement. En l'état, Django ne permet pas la création d'API
+réutilisation de composants, un ORM améliorant grandement la qualité de développement. En l'état, Django ne permet pas la création d'API
 REST sans beaucoup d'efforts, cependant il existe de nombreuses bibliothèques permettant d'ajouter cette fonctionnalité, mais aussi tout
 l'environnement nécessaire à Django pour réaliser ce type de projet, comme Django Ninja (utilisé pour ce projet) ou Django REST Framework.</p>
 <p>Les routes réalisées pour l'API ont été uniquement les routes importantes pour pouvoir réaliser des analyses, les routes CRUD à part pour
 certaines n'ont pas été implémentées, une grande partie des besoins en CRUD pour les tables composant l'outil est réalisée par le panel
 administrateur présent de base dans Django, sachant que les utilisateurs lambda n'ont pas besoin de pouvoir modifier, supprimer, créer ou
-avoir accès à certains éléments, il n'y avait de réelle nécessité à créer ses routes à l'heure actuelle.</p>
+avoir accès à certains éléments, il n'y avait de réelle nécessité à créer ces routes à l'heure actuelle.</p>
 <p>Le développement s'est focalisé sur la création de rapports, la création des tâches liées au rapport et la visualisation des rapports.
 Pour pouvoir parler plus en détail de cette partie, je vais vous présenter la deuxième illustration concernant cette compétence.</p>
-<h2 id="modelisation-des-donnees">Modèlisation des données</h2>
+<h2 id="modelisation-des-donnees">Modélisation des données</h2>
 <p><img src="https://but.mougammadaly.fr/competence1/mcd.png" alt="Modèle conceptuel de données d&#39;Holistic Analytica" title="Modèle conceptuel de données d&#39;Holistic Analytica" /></p>
 <table><thead><tr><th><strong>Illustration 2 : Modèle conceptuel de données d'Holistic Analytica</strong></th></tr></thead><tbody>
 </tbody></table>
-<p>Cette illustration représente la modélisation actuelle de la base de données de l'application Holistic Analytica. Il ne serait intéressant de
+<p>Cette illustration représente la modélisation actuelle de la base de données de l'application Holistic Analytica. Il ne serait pas intéressant de
 détailler chaque table, mais plutôt de voir les différents ensembles et groupes formés et de les comprendre dans le cadre
 de cet outil.</p>
 <p>On peut tout d'abord commencer par remarquer la présence de trois groupes importants :</p>
@@ -176,7 +176,7 @@ de cet outil.</p>
 <li>L'entité Page et ses entités liées</li>
 </ul>
 <p>Le rapport est composé d'une liste de pages, d'une liste de critères, d'une liste de tâches et d'une liste d'entrées. Les tâches sont les
-résultats bruts des analyses effectuées par les workers et elles sont enregistrées pour chaque type de tâches (critères personnalisés,
+résultats bruts des analyses effectuées par les workers et elles sont enregistrées pour chaque type de tâche (critères personnalisés,
 Lighthouse, Greenframe) et chaque page d'un rapport. Les entrées sont, quant à elles, les valeurs obtenues lors de l'analyse de chaque
 critère et reprises depuis le résultat des tâches. Les entrées sont une association entre un rapport, une page, une variable (critère)
 et la valeur calculée.</p>
@@ -188,21 +188,21 @@ workers pour analyser des pages. Les variables sont regroupées dans des famille
 en sous-groupes (performance (éco conception), on page (référencement), off page (référencement), etc.). Les variables provenant de la
 littérature scientifique, il est important de mettre en place quelque chose permettant l'ajout de sources et d'autres informations
 vis-à-vis des variables, c'est pour cela qu'il y a une entité Source de Variable.</p>
-<p>L'intérêt premier de modéliser les rapports de cette façon et de pouvoir les découper de manière atomique, avec les rapports pouvant se
-résumer à être un ensemble d'entrées, cette modélisation rend possible la relance individuelle du calcul de critères qui n'aurait pas
-abouti, mais aussi de pouvoir accumuler l'évolution de la valeur des différentes critères pour une même page, permettant l'historisation
+<p>L'intérêt premier de modéliser les rapports de cette façon est de pouvoir les découper de manière atomique, avec les rapports pouvant se
+résumer à être un ensemble d'entrées. Cette modélisation rend possible la relance individuelle du calcul de critères qui n'aurait pas
+abouti, mais aussi de pouvoir accumuler l'évolution de la valeur des différents critères pour une même page, permettant l'historisation
 des pages et des valeurs de critères.</p>
 <h2 id="difficultes-rencontrees">Difficultés rencontrées</h2>
 <p>Différentes difficultés ont pu être rencontrées durant le développement d'Holistic Analytica, tout d'abord, il y a les problèmes mentionnés
-plus haut concernant les raisons des changements de technologies. Dans les autres problèmes, il y a notamment, le déploiement de
-l'application. L'application étant décomposée en plusieurs parties le déploiement n'a pas forcément était aisé, en premier lieu, j'ai
+plus haut concernant les raisons des changements de technologies. Dans les autres problèmes, il y a notamment le déploiement de
+l'application. L'application étant décomposée en plusieurs parties, le déploiement n'a pas forcément été aisé, en premier lieu, j'ai
 commencé par le déploiement de l'API et de l'interface, cela n'a pas été très complexe, mais a quand même nécessité de la réflexion
 notamment pour pouvoir trouver un moyen de compiler les éléments statiques, de faire en sorte que certains éléments soient servis via le
 reverse proxy/serveur web NGINX, mais aussi de permettre un déploiement facilité de l'interface et de l'API. Le gros des difficultés
 rencontrées vient surtout du déploiement des workers, les workers doivent pouvoir être déployés aisément sur n'importe quelle machine et
 pouvoir tourner sans soucis et sans phases d'installation ou de paramétrage trop longues. Ce qui a conduit à l'emploi de Docker pour
-réaliser le déploiement comme montré dans la illustration 1, le déploiement est composé de deux images, la première correspond au worker en
-lui-même avec l'ajout d'outil externe comme Google Lighthouse et Greenframe et la deuxième correspond à l'image d'un web driver de
+réaliser le déploiement comme montré dans l'illustration 1, le déploiement est composé de deux images, la première correspond au worker en
+lui-même avec l'ajout d'outils externes comme Google Lighthouse et Greenframe et la deuxième correspond à l'image d'un web driver de
 Selenium et plus particulièrement d'un Chrome Driver car Google Chrome est le navigateur dominant le marché actuellement.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Ce projet m'a permis d'explorer différents éléments concernant le développement d'application. J'ai eu l'occasion de reprendre le

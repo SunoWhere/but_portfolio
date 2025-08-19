@@ -6,13 +6,13 @@ Cette section est dédiée à la présentation du travail réalisé correspondan
 
 ## Présentation de la compétence et des apprentissages critiques
 
-Cette compétence se centre sur l'optimisation des applications
+Cette compétence se centre sur l'optimisation des applications.
 
 |Composantes|AC 1|AC 2|AC 3|AC 4|
 |---|---|---|---|---|
-|Appréhender et construire des algorithmes|Analyser un problème avec méthode|Comparer des algorithmes pour des problèmes classiques|Formaliser et mettre en oeuvre des outils mathématiques pour l'informatique||
-|Sélectionner les algorithmes adéquats pour répondre à un problème donné|Choisir des structures de données complexes adaptées au problème|Utiliser des techniques algorithmiques adaptées pour des problèmes complexes|Comprendre les enjeux et moyens de sécurisation des données et du code|Évaluer l'impact environnemental et sociétal des solution proposées|
-|Analyser et optimiser des applications|Anticiper les résultats de divers métriques|Profiler, analyser et justifier le comportement d'un code existant|Choisir et utiliser des bibliothèques et méthodes dédiées au domaine d'application||
+|Appréhender et construire des algorithmes|Analyser un problème avec méthode|Comparer des algorithmes pour des problèmes classiques|Formaliser et mettre en œuvre des outils mathématiques pour l'informatique||
+|Sélectionner les algorithmes adéquats pour répondre à un problème donné|Choisir des structures de données complexes adaptées au problème|Utiliser des techniques algorithmiques adaptées pour des problèmes complexes|Comprendre les enjeux et moyens de sécurisation des données et du code|Évaluer l'impact environnemental et sociétal des solutions proposées|
+|Analyser et optimiser des applications|Anticiper les résultats de diverses métriques|Profiler, analyser et justifier le comportement d'un code existant|Choisir et utiliser des bibliothèques et méthodes dédiées au domaine d'application||
 
 ## Diviser pour mieux régner : des workers distribués
 
@@ -31,16 +31,16 @@ la charge était si importante que l'ancien outil (une preuve de concept dévelo
 à continuer les analyses. Dû à la charge trop importante, il arrivait que l'ancienne application cause des saturations de la mémoire et
 fasse planter le serveur hôte.
 
-En prenant en considération tout cela, j'ai décidé de reprendre le développement de l'application précédente de zéro comme mentionné dans la section
+En prenant en considération tout cela, j'ai décidé de reprendre le développement de l'application précédente de zéro, comme mentionné dans la section
 dédiée à la [compétence 1](/competence1/).
 
 Une différence majeure entre l'application actuelle et l'application précédente est la technologie principale utilisée. Dans l'application
 précédente qui servait de preuve de concept, pour effectuer les tâches d'analyses, j'ai eu recours à JavaScript et Puppeteer pour le
-scraping. A l'époque, par rapport aux contraintes de temps liées au stage, je n'avais eu trop le choix de que de me reposer sur les
-technologies précédentes pour développer plus rapidement, cependant, le gain en temps de développement s'est répercuté sur la
+scraping. A l'époque, par rapport aux contraintes de temps liées au stage, je n'avais trop le choix que de me reposer sur les
+technologies précédentes pour développer plus rapidement; cependant, le gain en temps de développement s'est répercuté sur la
 maintenabilité, la fiabilité, et les performances globales de l'application.
 
-En ayant tout cela en tête, j'ai décidé de reconsidérer toutes les options disponibles et prendre le temps qu'il faut pour obtenir un
+En ayant tout cela en tête, j'ai décidé de reconsidérer toutes les options disponibles et de prendre le temps qu'il faut pour obtenir un
 résultat satisfaisant pour l'analyse des pages web. Mon choix s'est porté assez rapidement sur le fait de décomposer le backend entre
 l'API pour gérer les données et des workers distribués pour gérer la collecte/analyse de données. Les technologies choisies pour les
 workers répondent aux limitations matérielles et aux contraintes d'échelle concernant la quantité de pages et de critères à analyser.
@@ -57,10 +57,10 @@ parallèle et de gérer l'ordonnancement de l'ensemble des tâches et de workers
 
 Pour pouvoir appeler des fonctions Rust en Python, j'ai eu besoin de créer un "binding" entre les fonctions Rust et les fonctions Python.
 Cela a permis de garder les aspects positifs de Rust (meilleure gestion de la mémoire et temps d'exécution rapide) et de pouvoir garder un
-backend avec un écosystème centré autours de Python (l'API étant faite avec Django et donc Python) et donc de pouvoir utiliser le
+backend avec un écosystème centré autour de Python (l'API étant faite avec Django et donc Python) et donc de pouvoir utiliser le
 programme Rust directement depuis Celery. Celery a permis aussi de centraliser tous les types de tâches à effectuer comme les tâches
-utilisant Google Lighthouse et les tâches utilisant Greenframe, Celery va détecter quel outil il doit appeler et va lancer un processus
-lié à cet outil à retourner le résultat.
+utilisant Google Lighthouse et les tâches utilisant Greenframe. Celery va détecter quel outil il doit appeler et va lancer un processus
+lié à cet outil pour retourner le résultat.
 
 Pour simplifier le développement, mais aussi diminuer fortement l'impact du calcul de certains critères, j'ai décidé d'employer
 différentes méthodes pour récupérer les informations relatives à un critère ou pour naviguer vers la page à analyser. Tout
@@ -81,28 +81,28 @@ de noter que la partie liée à l'API et à l'interface utilisateur a été enle
 trace et la précédente, notamment, sur la gestion des tâches et leur répartition. Il y a néanmoins des informations supplémentaires qui
 nous sont données, dans un premier temps, Google Lighthouse nécessite une console sans interface de Chrome pour fonctionner, alors que
 dans un second temps, on constate que les workers Rust utilisent un Chrome Driver (contenu dans un conteneur à part) pour fonctionner, ce
-qui amène à une duplication de navigateur. Une duplication qui n'a pas pu être éviter car Lighthouse ne pouvait pas fonctionner avec un
+qui amène à une duplication de navigateur. Une duplication qui n'a pas pu être évitée car Lighthouse ne pouvait pas fonctionner avec un
 web driver directement. Ensuite, on peut remarquer la présence d'un lien entre Greenframe et le programme Docker de la machine, c'est dû
 au fonctionnement de Greenframe qui nécessite l'exécution d'un conteneur contenant un navigateur pour récupérer des données de métriques
-concernant l'usage des ressources matérielles pour naviguer sur la page à analyser. Le navigateur utilisée par Greenframe ne peut
+concernant l'usage des ressources matérielles pour naviguer sur la page à analyser. Le navigateur utilisé par Greenframe ne peut
 malheureusement pas servir pour d'autres tâches, sinon cela pourrait fausser les résultats obtenus par Greenframe concernant l'usage
 matériel.
 
-La trace 2 montre aussi la présence d'opération en parallèle (la superposition d'éléments multiples en dessous des workers et le fait
-que plusieurs flèches sortent du Worker Pool Manager, le gestionnaire des instances de workers), j'ai mentionné plus haut le fait que les
+La trace 2 montre aussi la présence d'opérations en parallèle (la superposition d'éléments multiples en dessous des workers et le fait
+que plusieurs flèches sortent du Worker Pool Manager, le gestionnaire des instances de workers). J'ai mentionné plus haut le fait que les
 workers ont été pensés pour pouvoir être distribués, l'intérêt est dans un premier temps la diminution de la charge sur les serveurs et
 sur l'application principale, mais la capacité de pouvoir changer l'échelle et le nombre de pages analysées en parallèle juste en ajoutant
 de nouveaux workers.
 
 Après avoir effectué de nombreuses optimisations en termes de mémoire et d'utilisation du CPU pour les workers, ils sont en capacité de
-tourner sur des machines peu performantes avec 4Go de RAM et des processeurs avec une puissance de calcul tout à fait relative. Une des
+tourner sur des machines peu performantes avec 4 Go de RAM et des processeurs avec une puissance de calcul tout à fait relative. Une des
 méthodes d'optimisation principales pour alléger l'impact sur les ressources a été d'employer des spécificités de Rust permettant le fait
 de rendre aisément le retour de fonction statique après un premier appel, ce qui fait que les fonctions dépendant d'autres fonctions
 utilisent des résultats mis en cache pour éviter de relancer des processus qui peuvent être longs et lourds.
 
 ## De l'asynchrone pour gagner en temps
 
-L'un des objectifs premier du travail de cette année a été de minimiser le temps d'analyse pour rapport, pour ce faire, il fallait d'abord
+L'un des objectifs premiers du travail de cette année a été de minimiser le temps d'analyse par rapport; pour ce faire, il fallait d'abord
 minimiser le temps de calcul d'une page, puis minimiser le temps pour calculer certains critères quand cela était possible.
 
 ![Description de l'algorithme d'un worker pour analyser une page](worker_description.png "Description de l'algorithme d'un worker pour analyser une page")
@@ -117,9 +117,9 @@ variables à analyser, ensuite une connexion avec le web driver permettant la na
 fermée une fois que l'analyse de la page est terminée. Une fois la connexion établie, on navigue sur la page à analyser, puis on attend
 un certain laps de temps pour laisser le temps à la page de charger, le choix de 10s est lié à la variation de la connexion internet
 et le temps variable que peut mettre un site à charger, ce choix a été aussi fait en conséquence de données liées au référencement web,
-pour expliquer ce dernier point, il faut comprendre que des moteurs comme Google détermine si un site a été pertinent en fonction du
-temps que l'utilisateur a passé dessus, ce temps dans le cas de Google est de 8s. En prenant, les temps théoriques liés à la navigation
-déterminés par les moteurs de recherche comme Google, on peut penser que les développeurs mettent tout en oeuvre pour avoir un site
+pour expliquer ce dernier point, il faut comprendre que des moteurs comme Google déterminent si un site a été pertinent en fonction du
+temps que l'utilisateur a passé dessus, ce temps dans le cas de Google est de 8s. En prenant les temps théoriques liés à la navigation
+déterminés par les moteurs de recherche comme Google, on peut penser que les développeurs mettent tout en œuvre pour avoir un site
 chargé dans sa forme quasiment la plus complète avant que l'utilisateur ne décide de quitter la page et donc de charger la page en moins
 de 8s, les 10s ont été décidés en prenant en compte une marge supplémentaire.
 
