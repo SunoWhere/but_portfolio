@@ -5,7 +5,7 @@ title = "Jessy MOUGAMMADALY"
 # Jessy MOUGAMMADALY - BUT 3
 
 Je m'appelle Jessy MOUGAMMADALY et je suis actuellement étudiant en 3ème année de BUT3 informatique en alternance.
-Sur ce site, vous trouverez une description de mon travail relatif aux compétences à valider durant ma formation.
+Sur ce site, vous trouverez une description de mon travail relative aux compétences à valider durant ma formation.
 
 Le tavail présenté provient du travail effectué lors de mon alternance à l'École Supérieure des Technologies et des Affaires
 ou l'ESTA en tant qu'assistant de recherche.
