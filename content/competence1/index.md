@@ -38,15 +38,15 @@ Dans les fonctionnalités importantes, nous avions :
 ## Architecture de l'application
 
 Dans le but de pouvoir avoir une application maintenable et fiable sur le long terme, il a été important de réfléchir à la manière de
-décomposer celle-ci. Ce qui m'amène à vous présenter la première trace de ce portfolio.
+décomposer celle-ci. Ce qui m'amène à vous présenter la première illustration de ce portfolio.
 
 ![Architecture logicielle d'Holistic Analytica](architecture_white_bg.png "Architecture logicielle d'Holistic Analytica")
-|**Trace 1 : Architecture logicielle d'Holistic Analytica**|
+|**Illustration 1 : Architecture logicielle d'Holistic Analytica**|
 |---|
 
-### Description de la trace
+### Description de l'illustration
 
-Commençons par décrire cette trace et donc l'architecture de l'application. L'application est décomposée en trois parties :
+Commençons par décrire cette illustration et donc l'architecture de l'application. L'application est décomposée en trois parties :
 - L'interface utilisateur
 - L'API et la gestion des workers
 - Les workers permettant l'analyse des pages
@@ -54,7 +54,7 @@ Commençons par décrire cette trace et donc l'architecture de l'application. L'
 Dans cette section concernant la compétence 1, nous ne nous focaliserons pas sur la distribution des workers et les optimisations et
 contraintes liées à ceux-ci, nous en parlerons plus amplement dans la section concernant la [compétence 2](/competence2/).
 
-Pour en revenir à la description de la trace, nous avons l'interface utilisateur qui permet les interactions avec l'API, notamment
+Pour en revenir à la description de la illustration, nous avons l'interface utilisateur qui permet les interactions avec l'API, notamment
 pour la création des rapport d'analyses qui sont le regroupement d'une liste de pages et de critères à analyser, mais aussi la
 visualisation des données obtenues et ceux même pendant que l'analyse est progression. Nous pouvons aussi remarquer la présence d'une
 relation bidirectionnelle entre l'API et l'interface, cette relation est produite par la présence d'un websocket permettant la mise en
@@ -111,15 +111,15 @@ administrateur présent de base dans Django, sachant que les utilisateurs lambda
 avoir accès à certains éléments, il n'y avait de réelle nécessité à créer ses routes à l'heure actuelle.
 
 Le développement s'est focalisé sur la création de rapports, la création des tâches liées au rapport et la visualisation des rapports.
-Pour pouvoir parler plus en détail de cette partie, je vais vous présenter la deuxième trace concernant cette compétence.
+Pour pouvoir parler plus en détail de cette partie, je vais vous présenter la deuxième illustration concernant cette compétence.
 
 ## Modèlisation des données
 
 ![Modèle conceptuel de données d'Holistic Analytica](mcd.png "Modèle conceptuel de données d'Holistic Analytica")
-|**Trace 2 : Modèle conceptuel de données d'Holistic Analytica**|
+|**Illustration 2 : Modèle conceptuel de données d'Holistic Analytica**|
 |---|
 
-Cette trace représente la modélisation actuelle de la base de données de l'application Holistic Analytica. Il ne serait intéressant de
+Cette illustration représente la modélisation actuelle de la base de données de l'application Holistic Analytica. Il ne serait intéressant de
 détailler chaque table, mais plutôt de voir les différents ensembles et groupes formés et de les comprendre dans le cadre
 de cet outil.
 
@@ -159,7 +159,7 @@ notamment pour pouvoir trouver un moyen de compiler les éléments statiques, de
 reverse proxy/serveur web NGINX, mais aussi de permettre un déploiement facilité de l'interface et de l'API. Le gros des difficultés
 rencontrées vient surtout du déploiement des workers, les workers doivent pouvoir être déployés aisément sur n'importe quelle machine et
 pouvoir tourner sans soucis et sans phases d'installation ou de paramétrage trop longues. Ce qui a conduit à l'emploi de Docker pour 
-réaliser le déploiement comme montré dans la trace 1, le déploiement est composé de deux images, la première correspond au worker en 
+réaliser le déploiement comme montré dans la illustration 1, le déploiement est composé de deux images, la première correspond au worker en 
 lui-même avec l'ajout d'outil externe comme Google Lighthouse et Greenframe et la deuxième correspond à l'image d'un web driver de 
 Selenium et plus particulièrement d'un Chrome Driver car Google Chrome est le navigateur dominant le marché actuellement.
 

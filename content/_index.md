@@ -7,11 +7,12 @@ title = "Jessy MOUGAMMADALY"
 Je m'appelle Jessy MOUGAMMADALY et je suis actuellement étudiant en 3ème année de BUT3 informatique en alternance.
 Sur ce site, vous trouverez une description de mon travail relatif aux compétences à valider durant ma formation.
 
-Le tavail présenté provient du travail effectué lors de mon alternance à l'ESTA en tant qu'assistant de recherche.
+Le tavail présenté provient du travail effectué lors de mon alternance à l'École Supérieure des Technologies et des Affaires
+ou l'ESTA en tant qu'assistant de recherche.
 
-La partie portfolio est constituée des compétences :
-- [Compétence 1 - Réaliser un développement d'application](/competence1/)
+La partie portfolio est constituée de la compétence:
 - [Compétence 2 - Optimiser des applications](/competence2/)
 
-La partie SAE est constituée de la compétence :
+La partie SAE est constituée des compétences :
+- [Compétence 1 - Réaliser un développement d'application](/competence1/)
 - [Compétence 6 - Collaborer au sein d'une équipe informatique](/competence6/)

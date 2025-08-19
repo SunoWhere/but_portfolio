@@ -76,7 +76,7 @@ des algorithmes associés.
 |**Trace 2 : Architecture distribuée des workers**|
 |---|
 
-Cette trace est tirée de la trace 1 de la compétence 1, mais ici, nous nous focalisons sur le côté distribué des workers. Il est important
+Cette trace est tirée de l'illustration 1 de la compétence 1, mais ici, nous nous focalisons sur le côté distribué des workers. Il est important
 de noter que la partie liée à l'API et à l'interface utilisateur a été enlevée. On peut d'abord constater des similarités entre cette
 trace et la précédente, notamment, sur la gestion des tâches et leur répartition. Il y a néanmoins des informations supplémentaires qui
 nous sont données, dans un premier temps, Google Lighthouse nécessite une console sans interface de Chrome pour fonctionner, alors que
@@ -165,6 +165,8 @@ pub async fn process(
         values
     }
 ```
+|**Trace 4 : Fonction de lancement des tâches et de récupération des résultats (Complément de la trace 3)**|
+|---|
 
 Il pourrait être indigeste de donner l'ensemble du code permettant le calcul de chaque critère, et ce n'est pas ici l'objectif. Dans
 cette fonction, plusieurs éléments sont importants, tout d'abord, nous avons la création de Future en Rust, ce sont des structures
@@ -176,15 +178,39 @@ de manière désordonnée, on attend uniquement la complétion d'un Future avant
 de type Map pour permettre l'association entre le nom du critère et sa valeur de retour, les critères ayant soulevé une erreur ne sont pas
 sauvegardés, le backend côté API gérera les valeurs manquantes en spécifiant qu'une erreur est survenue pour tel critère.
 
-Il est possible que deux critères ou plus soient dépendants du résultat d'une fonction commune ou doivent accéder à un même élément de la mémoire,
-cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui Mutex et accès
-concurrent.
+Il est possible que deux critères ou plus soient dépendants du résultat d'une fonction commune ou doivent accéder à un même élément 
+de la mémoire, cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui Mutex 
+et accès concurrent.
 
 La dernière étape est le retour de la Map contenant les résultats, pour ce faire, la Map est envoyé dans la file de message de résultats
 du "Message Broker", cette file est lue par un worker dédié côté API permettant la récupération des entrées et leur sauvegarde en base
-de données.
+de données. J'ai décidé ici de ne pas faire de requêtes à l'API pour l'enregistrement en base de données, mais j'ai plutôt décidé 
+d'utiliser un worker dédié à l'enregistrement en base de données, plusieurs raisons ont motivé ce choix. Dans ces raisons, il y a
+notamment la quantité d'entrées à sauvegarder, celle-ci peut-être plus ou moins conséquente et peut nuire en partie à l'accès à l'API,
+même si l'API pourrait théoriquement supporter un nombre conséquent de requêtes, il n'est pas forcément judicieux d'opérer de cette 
+manière. Le worker dédié à l'enregistrement récupère les résultats des tâches et opère dessus pour produire des enregistrements dans les
+tables nécessaires, cette façon de faire permet d'alléger l'impact sur l'API, mais aussi d'avoir le "Message Broker" et Celery qui
+permettent de conserver les données dans la file de messages dans le cas où l'enregistrement échoue (base de données non disponible, etc.),
+ce qui permet de faire une sorte de tampon en attendant l'enregistrement final des données. En faisant, je cherche surtout à pouvoir
+libérer les workers chargés de l'analyse des pages en ne les forçant à vérifier et à attendre l'enregistrement via l'API. 
 
 Dans le cas où un worker échoue à se lancer, Celery gérera la relance des tâches échouées sur un autre worker disponible.
+
+## Un web en constante évolution et de plus en plus protégé
+
+Une des grandes difficultés concernant le scraping web est le fait que le web a tendance à évoluer très vite, les technologies et les
+moyens de protection pour se prémunir contre les robots cherchant à récupérer le contenu des sites se perfectionnent. Le fait que la
+sécurité du web et que la protection contre les menaces des robots (ChatBot, Scraper mal intentionné, etc.) s'améliorent est une bonne
+chose, mais cela rend difficile mon moyen principal d'acquisition des données. Une partie non négligeable de mon temps a été utilisée pour
+trouver des moyens de contourner ces protections, cependant une solution que j'ai pu trouver au début de mon alternance ne va plus
+forcément continuer de fonctionner aujourd'hui, il est donc impératif que je fasse des tests réguliers sur différents que je vérifie si
+l'accès est possible et finalement, trouver de nouvelles solutions pour accéder aux pages.
+
+Pour limiter au maximum les cas de blocages, j'essaie de faire en sorte de déguiser le navigateur automatique en un navigateur normal pour
+faire en sorte de simuler et de croire à un véritable utilisateur. Cette méthode a cependant beaucoup de limites, les sites sont de plus
+en plus au fait de ce genre de pratique et font des analyses concernant les comportements lors de la navigation ou passent par des
+services comme Cloudflare pour déléguer l'analyse de la navigation d'un utilisateur et ainsi limiter le nombre de robots cherchant à
+accéder aux sites protégés.
 
 ## Conclusion
 
