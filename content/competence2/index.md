@@ -170,10 +170,10 @@ pub async fn process(
 
 Il pourrait être indigeste de donner l'ensemble du code permettant le calcul de chaque critère, et ce n'est pas ici l'objectif. Dans
 cette fonction, plusieurs éléments sont importants, tout d'abord, nous avons la création de Future en Rust, ce sont des structures
-de données similaires au Promise en JavaScript. Chaque Future correspond à l'exécution du processus de calcul d'un critère, pour ne pas
+de données similaires aux Promise en JavaScript. Chaque Future correspond à l'exécution du processus de calcul d'un critère, pour ne pas
 avoir de critère bloquant le retour final de l'analyse, il est nécessaire de mettre en place une durée maximale d'exécution de la tâche
 avant de forcer son arrêt. L'ensemble des Future est stocké dans une liste de Future qui permet de récupérer les résultats des Future
-de manière désordonnée, on attend uniquement la complétion d'un Future avant de récupérer son résultat s'il y en a, dans le cas, d'un
+de manière désordonnée, on attend uniquement la complétion d'un Future avant de récupérer son résultat s'il y en a, dans le cas d'un
 échec, le résultat prend la valeur "none" et renvoie une erreur. Pour finir, les résultats récupérés sont sauvegardés dans une collection
 de type Map pour permettre l'association entre le nom du critère et sa valeur de retour, les critères ayant soulevé une erreur ne sont pas
 sauvegardés, le backend côté API gérera les valeurs manquantes en spécifiant qu'une erreur est survenue pour tel critère.
@@ -182,11 +182,11 @@ Il est possible que deux critères ou plus soient dépendants du résultat d'une
 de la mémoire, cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui Mutex 
 et accès concurrent.
 
-La dernière étape est le retour de la Map contenant les résultats, pour ce faire, la Map est envoyé dans la file de message de résultats
+La dernière étape est le retour de la Map contenant les résultats, pour ce faire, la Map est envoyée dans la file de message de résultats
 du "Message Broker", cette file est lue par un worker dédié côté API permettant la récupération des entrées et leur sauvegarde en base
 de données. J'ai décidé ici de ne pas faire de requêtes à l'API pour l'enregistrement en base de données, mais j'ai plutôt décidé 
 d'utiliser un worker dédié à l'enregistrement en base de données, plusieurs raisons ont motivé ce choix. Dans ces raisons, il y a
-notamment la quantité d'entrées à sauvegarder, celle-ci peut-être plus ou moins conséquente et peut nuire en partie à l'accès à l'API,
+notamment la quantité d'entrées à sauvegarder, celle-ci peut être plus ou moins conséquente et peut nuire en partie à l'accès à l'API,
 même si l'API pourrait théoriquement supporter un nombre conséquent de requêtes, il n'est pas forcément judicieux d'opérer de cette 
 manière. Le worker dédié à l'enregistrement récupère les résultats des tâches et opère dessus pour produire des enregistrements dans les
 tables nécessaires, cette façon de faire permet d'alléger l'impact sur l'API, mais aussi d'avoir le "Message Broker" et Celery qui
