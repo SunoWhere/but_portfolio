@@ -22,9 +22,9 @@ supérieur composé d'environ 25 membres. La répartition des membres de l'ESTA 
 - 11 enseignants-chercheurs
 - 4 doctorants
 
-On constate plusieurs choses en voyant, tout d'abord, l'importance de la partie recherche, et ensuite l'absence d'équipe ou de personnel
+On constate plusieurs choses en voyant ça, tout d'abord, l'importance de la partie recherche, et ensuite l'absence d'équipe ou de personnel
 informatique. J'ai donc été le seul membre de l'ESTA composant le personnel informatique, ce qui m'a amené à avoir, en plus du projet
-décrit dans les compétences [1](/competence1/) et [2](/competence2), des tâches annexes pour le personnel de l'ESTA qui ont consisté à
+décrit dans les compétences [1](/competence1/) et [2](/competence2), des tâches annexes pour le personnel de l'ESTA qui ont consisté en
 de la maintenance, du conseil et de l'aide en informatique.
 
 Pour gérer ses besoins en informatique, l'ESTA se repose sur deux prestataires :
@@ -46,7 +46,7 @@ représente ma mission principale, soit à des tâches annexes. J'ai pu recevoir
 concernant l'interface de l'outil Holistic Analytica, j'ai pu concevoir des scripts pour aider au formatage des données pour certains
 chercheurs.
 
-Le déroulement de mon alternance s'est fait de manière assez agile, même si dans la forme,  ce n'était pas vraiment le cas. Mon tuteur,
+Le déroulement de mon alternance s'est fait de manière assez agile, même si dans la forme, ce n'était pas vraiment le cas. Mon tuteur,
 M. SAGOT, et moi, nous mettions d'accord concernant les tâches à réaliser et leur priorité, je faisais des comptes rendus quasi quotidiens
 de mes avancements, car la communication était un facteur important pour permettre au projet de connaître une évolution dans la bonne
 direction. J'étais libre de gérer le projet comme je l'entendais, cependant j'avais besoin de justifier mes choix, en expliquant leur
@@ -108,7 +108,7 @@ utilisateur en général.
 Durant l'accomplissement de mes tâches, j'ai eu l'opportunité de participer à des réunions, dans lesquelles j'ai pu être actif, concernant
 la direction et les possibilités pour l'évolution d'Holistic Analytica et des recherches liées à cet outil. Dans un premier temps, les
 points quotidiens avec mon tuteur ont permis de rester centré sur les objectifs prioritaires ou de les redéfinir en fonction des besoins
-et de l'avance du projet. Dans un second temps, les réunions avec mon tuteur et certains autres enseignants-chercheurs de l'ESTA m'ont
+et de l'avancement du projet. Dans un second temps, les réunions avec mon tuteur et certains autres enseignants-chercheurs de l'ESTA m'ont
 permis de comprendre leurs besoins, mais aussi de pouvoir clarifier mes choix concernant le calcul de critères et de pouvoir comprendre
 leur point de vue par rapport aux données déjà collectées.
 
