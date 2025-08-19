@@ -121,7 +121,7 @@ relation bidirectionnelle entre l'API et l'interface, cette relation est produit
 place d'un système de notifications pour obtenir les mises à jour concernant la progression des rapports sur une page dédiée.</p>
 <p>L'API a deux bases de données qui lui sont liées, la première est une base de données relationnelle classique permettant le stockage des
 données permettant le bon fonctionnement de l'outil. La deuxième base de données sert de "Message Broker", c'est une file de messages pour
-permettre l'ordonnancement des tâches workers, lorsqu'un rapport est créé, un ensemble de tâches est ajouté à la file de messages.
+permettre l'ordonnancement des tâches pour les workers, lorsqu'un rapport est créé, un ensemble de tâches est ajouté à la file de messages.
 Cette file de messages est accessible par n'importe quel worker qui, par l'intermédiaire d'un outil d'ordonnancement, va pouvoir prendre une
 tâche en attente (une tâche est une page à analyser suivant une liste de critères définie) et commencer l'analyse avant de retourner ses
 résultats dans la file de messages du "Message Broker". Les résultats retournés sont ensuite stockés dans la base de données principale
@@ -180,7 +180,7 @@ résultats bruts des analyses effectuées par les workers et elles sont enregist
 Lighthouse, Greenframe) et chaque page d'un rapport. Les entrées sont, quant à elles, les valeurs obtenues lors de l'analyse de chaque
 critère et reprises depuis le résultat des tâches. Les entrées sont une association entre un rapport, une page, une variable (critère)
 et la valeur calculée.</p>
-<p>Le groupe relatif à l'entité Page est relativement petit, il est surtout de l'entité Page et de l'entité Secteur de l'entreprise, les
+<p>Le groupe relatif à l'entité Page est relativement petit, il est surtout composé de l'entité Page et de l'entité Secteur de l'entreprise, les
 raisons de cette modélisation sont dues à l'anticipation de certaines fonctionnalités comme la possibilité de comparer des pages entre
 elles en fonction de leurs secteurs d'activité.</p>
 <p>L'entité Variable qui correspond à ce que j'appelle critère depuis le début, sert à regrouper toutes les variables utilisées par les

@@ -62,7 +62,7 @@ place d'un système de notifications pour obtenir les mises à jour concernant l
 
 L'API a deux bases de données qui lui sont liées, la première est une base de données relationnelle classique permettant le stockage des
 données permettant le bon fonctionnement de l'outil. La deuxième base de données sert de "Message Broker", c'est une file de messages pour
-permettre l'ordonnancement des tâches workers, lorsqu'un rapport est créé, un ensemble de tâches est ajouté à la file de messages.
+permettre l'ordonnancement des tâches pour les workers, lorsqu'un rapport est créé, un ensemble de tâches est ajouté à la file de messages.
 Cette file de messages est accessible par n'importe quel worker qui, par l'intermédiaire d'un outil d'ordonnancement, va pouvoir prendre une
 tâche en attente (une tâche est une page à analyser suivant une liste de critères définie) et commencer l'analyse avant de retourner ses
 résultats dans la file de messages du "Message Broker". Les résultats retournés sont ensuite stockés dans la base de données principale
@@ -134,7 +134,7 @@ Lighthouse, Greenframe) et chaque page d'un rapport. Les entrées sont, quant à
 critère et reprises depuis le résultat des tâches. Les entrées sont une association entre un rapport, une page, une variable (critère)
 et la valeur calculée.
 
-Le groupe relatif à l'entité Page est relativement petit, il est surtout de l'entité Page et de l'entité Secteur de l'entreprise, les
+Le groupe relatif à l'entité Page est relativement petit, il est surtout composé de l'entité Page et de l'entité Secteur de l'entreprise, les
 raisons de cette modélisation sont dues à l'anticipation de certaines fonctionnalités comme la possibilité de comparer des pages entre
 elles en fonction de leurs secteurs d'activité.
 
