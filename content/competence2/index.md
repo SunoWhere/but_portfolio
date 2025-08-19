@@ -179,7 +179,7 @@ de type Map pour permettre l'association entre le nom du critère et sa valeur d
 sauvegardés, le backend côté API gérera les valeurs manquantes en spécifiant qu'une erreur est survenue pour tel critère.
 
 Il est possible que deux critères ou plus soient dépendants du résultat d'une fonction commune ou doivent accéder à un même élément 
-de la mémoire, cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui Mutex 
+de la mémoire. Cela n'a pas posé de problèmes parce que Rust embarque l'ensemble des éléments permettant de gérer tout ce qui est Mutex 
 et accès concurrent.
 
 La dernière étape est le retour de la Map contenant les résultats, pour ce faire, la Map est envoyée dans la file de message de résultats
