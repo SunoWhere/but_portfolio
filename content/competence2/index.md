@@ -53,7 +53,7 @@ la trace suivante.
 
 On constate qu'en plus de Rust, on voit la présence de Python dans la gestion des tâches des workers, cela est dû à l'utilisation de
 l'outil [Celery](https://docs.celeryq.dev/en/stable) qui permet de faire fonctionner des workers distribués, de gérer des tâches en
-parallèle et de gérer l'ordonnancement de l'ensemble des tâches et de workers sans qu'on n'ait besoin de développer une solution propre.
+parallèle et de gérer l'ordonnancement de l'ensemble des tâches et des workers sans qu'on n'ait besoin de développer une solution propre.
 
 Pour pouvoir appeler des fonctions Rust en Python, j'ai eu besoin de créer un "binding" entre les fonctions Rust et les fonctions Python.
 Cela a permis de garder les aspects positifs de Rust (meilleure gestion de la mémoire et temps d'exécution rapide) et de pouvoir garder un
@@ -91,7 +91,7 @@ matériel.
 La trace 2 montre aussi la présence d'opérations en parallèle (la superposition d'éléments multiples en dessous des workers et le fait
 que plusieurs flèches sortent du Worker Pool Manager, le gestionnaire des instances de workers). J'ai mentionné plus haut le fait que les
 workers ont été pensés pour pouvoir être distribués, l'intérêt est dans un premier temps la diminution de la charge sur les serveurs et
-sur l'application principale, mais la capacité de pouvoir changer l'échelle et le nombre de pages analysées en parallèle juste en ajoutant
+sur l'application principale, mais aussi la capacité de pouvoir changer l'échelle et le nombre de pages analysées en parallèle juste en ajoutant
 de nouveaux workers.
 
 Après avoir effectué de nombreuses optimisations en termes de mémoire et d'utilisation du CPU pour les workers, ils sont en capacité de
@@ -191,7 +191,7 @@ même si l'API pourrait théoriquement supporter un nombre conséquent de requê
 manière. Le worker dédié à l'enregistrement récupère les résultats des tâches et opère dessus pour produire des enregistrements dans les
 tables nécessaires, cette façon de faire permet d'alléger l'impact sur l'API, mais aussi d'avoir le "Message Broker" et Celery qui
 permettent de conserver les données dans la file de messages dans le cas où l'enregistrement échoue (base de données non disponible, etc.),
-ce qui permet de faire une sorte de tampon en attendant l'enregistrement final des données. En faisant, je cherche surtout à pouvoir
+ce qui permet de faire une sorte de tampon en attendant l'enregistrement final des données. En faisant ça, je cherche surtout à pouvoir
 libérer les workers chargés de l'analyse des pages en ne les forçant à vérifier et à attendre l'enregistrement via l'API. 
 
 Dans le cas où un worker échoue à se lancer, Celery gérera la relance des tâches échouées sur un autre worker disponible.
@@ -203,7 +203,7 @@ moyens de protection pour se prémunir contre les robots cherchant à récupére
 sécurité du web et que la protection contre les menaces des robots (ChatBot, Scraper mal intentionné, etc.) s'améliorent est une bonne
 chose, mais cela rend difficile mon moyen principal d'acquisition des données. Une partie non négligeable de mon temps a été utilisée pour
 trouver des moyens de contourner ces protections, cependant une solution que j'ai pu trouver au début de mon alternance ne va plus
-forcément continuer de fonctionner aujourd'hui, il est donc impératif que je fasse des tests réguliers sur différents que je vérifie si
+forcément continuer de fonctionner aujourd'hui, il est donc impératif que je fasse des tests réguliers sur différents sites, que je vérifie si
 l'accès est possible et finalement, trouver de nouvelles solutions pour accéder aux pages.
 
 Pour limiter au maximum les cas de blocages, j'essaie de faire en sorte de déguiser le navigateur automatique en un navigateur normal pour
